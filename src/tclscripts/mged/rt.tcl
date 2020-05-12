@@ -381,6 +381,13 @@ destination to the background color." } }
     hoc_register_data $top.fbtoggle "Enable Framebuffer"\
 		{ { summary "Enable/Disable the 2D framebuffer overlay for displaying ray-traced images." } }
 
+    checkbutton $top.fbupdate \
+		-text "Update Framebuffer" \
+		-command "toggle_frambuffer_update $id" \
+		-font $tmp_font \
+		-padx 0.5m -pady 0.5m
+    hoc_register_data $top.fbupdate "Update Framebuffer"\
+		{ { summary "Update the 2D framebuffer overlay for displaying ray-traced images." } }
 
     grid $top.srcE $top.srcMB -sticky nsew -in $top.srcF
     grid columnconfigure $top.srcF 0 -weight 1
@@ -398,7 +405,8 @@ destination to the background color." } }
     grid $top.destL $top.destF - - - -pady 1 -sticky nsew -in $top.gridF1
     grid $top.sizeL $top.sizeF - - - -pady 1 -sticky nsew -in $top.gridF1
     grid $top.colorL $top.colorF - - - -pady 1 -sticky nsew -in $top.gridF1
-    grid $top.fbtoggle - - - - -pady 1 -sticky nsew -in $top.gridF1
+    grid $top.fbtoggle $top.fbupdate - - - -pady 1 -sticky nsew -in $top.gridF1
+
     grid $top.raytraceB $top.abortB $top.clearB x $top.advancedB -sticky "ew" -in $top.gridF1
     grid columnconfigure $top.gridF1 3 -weight 1
     grid rowconfigure $top.gridF1 0 -weight 1
@@ -428,6 +436,19 @@ destination to the background color." } }
 proc rt_ok { id top } {
     do_Raytrace $id
     rt_dismiss $id
+}
+
+# should add a flag for updating the main framebuffer
+# or add it to mgedrc settings?...
+# look for bindings.c --> <ButtonRelase> for its current useage.
+proc toggle_frambuffer_update { id } {
+#    global mged_gui
+#    global mged_display
+#
+#    if {$mged_display(state) == "SOL EDIT"} {
+#      do_Raytrace $id
+#      rt_dismiss $id
+#    }
 }
 
 proc do_Raytrace { id } {

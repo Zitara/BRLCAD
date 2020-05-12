@@ -299,8 +299,8 @@ proc default_mouse_bindings { w } {
 	    bind $w <Mod2-ButtonPress-1> "winset $w; zoom 2.0; break"
 	}
     } else {
-	bind $w <1> "winset $w; focus $w; zoom 0.5; break"
-	bind $w <2> "winset $w; focus $w; set tmpstr \[dm m %x %y\]; print_return_val \$tmpstr; break"
+	bind $w <2> "winset $w; focus $w; zoom 0.5; break"
+	bind $w <1> "winset $w; focus $w; set tmpstr \[dm m %x %y\]; print_return_val \$tmpstr; break"
 	bind $w <3> "winset $w; focus $w; zoom 2.0; break"
 
 	if {$tcl_platform(os) == "Darwin"} {
@@ -311,7 +311,7 @@ proc default_mouse_bindings { w } {
 	}
     }
 
-    bind $w <ButtonRelease> "winset $w; dm idle; break"
+    bind $w <ButtonRelease> "winset $w; update_framebuffer; dm idle; break"
     bind $w <KeyRelease-Control_L> "winset $w; dm idle; break"
     bind $w <KeyRelease-Control_R> "winset $w; dm idle; break"
     bind $w <KeyRelease-Shift_L> "winset $w; dm idle; break"
@@ -447,6 +447,30 @@ proc update_gui { w vname val } {
     }
 }
 
+proc update_framebuffer { } {
+    global mged_gui
+    global rt_control
+    global port
+
+    #if ![info exists mged_players] {
+	#return
+    #}
+    #if ![info exists win_to_id($w)] {
+	#return
+    #}
+    #set id $win_to_id($w)
+
+    set win [winset]
+    set id [get_player_id_dm $win]
+
+    rt_init_vars $id $win
+    do_Raytrace $id
+   # $id
+   # set size [dm size]
+   # set dm_height [lindex $size 0]
+   # set dm_width  [lindex $size 1]
+   # set dm_aspect [expr {$dm_width /$dm_height}]
+}
 
 # Local Variables:
 # mode: Tcl
